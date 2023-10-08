@@ -137,7 +137,7 @@ namespace Class_012_Practices.Controllers
 
             if (article == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
             db.Entry(article).State = System.Data.Entity.EntityState.Deleted;
