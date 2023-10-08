@@ -37,7 +37,7 @@ namespace Class_012_Practices.Controllers
 
         [HttpPost]
 
-        public ActionResult Create(Article a, int[] tagId )
+        public ActionResult Create(Article a, int[] tagId)
         {
             if (ModelState.IsValid)
             {
@@ -74,39 +74,40 @@ namespace Class_012_Practices.Controllers
             return View(article);
         }
 
-       
+
         [HttpPost]
-        public ActionResult Edit(ArticleViewModel model)
+        public ActionResult Edit(Article a, int[] tagId)
         {
             if (ModelState.IsValid)
             {
-                var article = db.Articles.FirstOrDefault(x => x.ArticleId == model.ArticleId);
+                //removed checked box 
+                var existing = db.ArticleTags.Where(x => x.ArticleId == a.ArticleId);
+                db.ArticleTags.RemoveRange(existing);
 
-                if (article != null)
+                //Add checkbox while editing
+                foreach (var i in tagId)
                 {
-                    // Update article properties
-
-                    
-
-                    article.Title = model.Title;
-                    article.PublishDate = model.PublishDate;
-
-
-                    var checkBoxItems = db.Tags.Select(t => new CheckBoxModel
-                    {
-                        TagId = t.TagId,
-                        TagName = t.TagName,
-                        Selected = true
-                    }).ToList();
-                    ViewBag.checkBoxData = checkBoxItems;
+                    db.ArticleTags.Add(new ArticleTag { ArticleId = a.ArticleId, TagId = i });
                 }
-                db.Entry(article).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(a).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-           return View();
-            
-          
+
+            var checkBoxItems = db.Tags.Select(t => new CheckBoxModel
+            {
+                TagId = t.TagId,
+                TagName = t.TagName,
+                Selected = false
+            }).ToList();
+
+            foreach (var art in a.ArticleTags)
+            {
+                checkBoxItems.First(x => x.TagId == art.TagId).Selected = true;
+            }
+            ViewBag.checkBoxData = checkBoxItems;
+
+            return View(a);
         }
 
 
@@ -130,7 +131,7 @@ namespace Class_012_Practices.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-       
+
         public ActionResult DeleteConfirmed(int id)
         {
             var article = db.Articles.First(x => x.ArticleId == id);
