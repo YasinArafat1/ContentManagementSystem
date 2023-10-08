@@ -120,7 +120,7 @@ namespace Class_012_Practices.Controllers
                 TagName = t.TagName,
                 Selected = false
             }).ToList();
-
+            //check box e sir list hisebe patayce tai nice foreach dice itarate korar jonno
             foreach (var a in article.ArticleTags)
             {
                 checkBoxItems.First(x => x.TagId == a.TagId).Selected = true;
