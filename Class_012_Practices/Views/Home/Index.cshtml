@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Class_012_Practices.Models.ViewModels.ArticleViewModel>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="row px-3 pb-1">
+    <div class="col-12">
+        <h2 class="display-5">Article Information</h2>
+        <div class="d-flex justify-content-end mb-1">
+            <a href="@Url.Action("Create","Home")" , class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>Add</a>
+        </div>
+        <table class="table table-bordered table-striped table-sm text-center">
+            <thead class="table-primary">
+                <tr>
+                    <th>@Html.DisplayNameFor(x => x.Title)</th>
+                    <th>@Html.DisplayNameFor(x => x.PublishDate)</th>
+                    <th>@Html.DisplayNameFor(x => x.Tags)</th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => item.Title)</td>
+                        <td>@Html.DisplayFor(x => item.PublishDate)</td>
+                        <td>@Html.DisplayFor(x => item.Tags)</td>
+                        <td>
+                        
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ArticleId }, new {@class="btn btn-primary"})
+
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ArticleId }, new {@class="btn btn-danger"})
+
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
