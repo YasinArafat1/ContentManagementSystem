@@ -133,7 +133,7 @@ namespace Class_012_Practices.Controllers
        
         public ActionResult DeleteConfirmed(int id)
         {
-            var article = db.Articles.FirstOrDefault(x => x.ArticleId == id);
+            var article = db.Articles.First(x => x.ArticleId == id);
 
             if (article == null)
             {
